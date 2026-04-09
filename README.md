@@ -34,21 +34,29 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ```
 src/
   app/
-    api/auth/   # better-auth API route handler
-    login/      # Login page
-    register/   # Registration page
+    (storefront)/
+      layout.tsx  # Storefront shell (header + footer)
+      page.tsx    # Homepage (hero, products, blog)
+    api/auth/     # better-auth API route handler
+    login/        # Login page
+    register/     # Registration page
+  components/
+    storefront/
+      header.tsx  # Server component with nav & auth state
+      footer.tsx  # 3-column footer
+    ui/           # Shared UI primitives (Button, Card, Badge, etc.)
   lib/
-    auth.ts     # better-auth server config
+    auth.ts       # better-auth server config
     auth-client.ts # better-auth client (React)
-    db.ts       # Prisma client singleton
-    tenant.ts   # Multi-tenant helper
+    db.ts         # Prisma client singleton
+    tenant.ts     # Multi-tenant helper
 prisma/
-  schema.prisma # Database schema (auth, catalog, blog, subscribers)
-  migrations/   # Database migrations
+  schema.prisma   # Database schema (auth, catalog, blog, subscribers)
+  migrations/     # Database migrations
 public/
-  uploads/      # User-uploaded files (gitignored)
+  uploads/        # User-uploaded files (gitignored)
 docs/
-  superpowers/  # Project plans & specs
+  superpowers/    # Project plans & specs
 ```
 
 ## Database
