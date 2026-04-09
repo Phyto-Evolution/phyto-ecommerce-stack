@@ -28,6 +28,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - **Database:** PostgreSQL 16 (via Docker)
 - **ORM:** Prisma 7 (PostgreSQL)
 - **Auth:** better-auth (email/password)
+- **Image Processing:** Sharp (resize, WebP conversion, thumbnails)
 
 ## Project Structure
 
@@ -50,6 +51,7 @@ src/
         settings/
           page.tsx        # Store settings page
     api/auth/     # better-auth API route handler
+    api/v1/upload/ # Image upload endpoint (OWNER-only, Sharp processing)
     login/        # Login page
     register/     # Registration page
   components/
@@ -73,6 +75,8 @@ src/
     auth-client.ts # better-auth client (React)
     db.ts         # Prisma client singleton
     tenant.ts     # Multi-tenant helper
+    storage/
+      images.ts   # Image processing (resize, WebP conversion, thumbnails)
     events/
       emitter.ts  # Typed event emitter for domain events
 prisma/
