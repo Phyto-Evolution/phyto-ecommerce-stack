@@ -41,18 +41,26 @@ src/
       dashboard/
         layout.tsx # Dashboard shell with auth guard (OWNER only)
         page.tsx   # Overview page with stats cards
+        products/
+          page.tsx        # Product list page
+          new/page.tsx    # Create product page
+          [id]/edit/page.tsx # Edit product page
     api/auth/     # better-auth API route handler
     login/        # Login page
     register/     # Registration page
   components/
     dashboard/
-      sidebar.tsx  # Client component with nav links & active state
-      topbar.tsx   # Server component showing user info
-      stats-card.tsx # Stats display card
+      sidebar.tsx     # Client component with nav links & active state
+      topbar.tsx      # Server component showing user info
+      stats-card.tsx  # Stats display card
+      product-form.tsx  # Product create/edit form
+      product-table.tsx # Product list with actions
     storefront/
       header.tsx  # Server component with nav & auth state
       footer.tsx  # 3-column footer
     ui/           # Shared UI primitives (Button, Card, Badge, etc.)
+  actions/
+    product-actions.ts # Server actions for product CRUD
   lib/
     auth.ts       # better-auth server config
     auth-client.ts # better-auth client (React)
