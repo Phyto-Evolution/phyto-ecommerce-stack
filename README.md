@@ -27,14 +27,19 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - **Styling:** Tailwind CSS
 - **Database:** PostgreSQL 16 (via Docker)
 - **ORM:** Prisma 7 (PostgreSQL)
-- **Auth:** better-auth (planned)
+- **Auth:** better-auth (email/password)
 
 ## Project Structure
 
 ```
 src/
-  app/          # Next.js App Router pages & layouts
+  app/
+    api/auth/   # better-auth API route handler
+    login/      # Login page
+    register/   # Registration page
   lib/
+    auth.ts     # better-auth server config
+    auth-client.ts # better-auth client (React)
     db.ts       # Prisma client singleton
     tenant.ts   # Multi-tenant helper
 prisma/
