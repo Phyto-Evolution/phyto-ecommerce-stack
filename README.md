@@ -37,10 +37,18 @@ src/
     (storefront)/
       layout.tsx  # Storefront shell (header + footer)
       page.tsx    # Homepage (hero, products, blog)
+    (dashboard)/
+      dashboard/
+        layout.tsx # Dashboard shell with auth guard (OWNER only)
+        page.tsx   # Overview page with stats cards
     api/auth/     # better-auth API route handler
     login/        # Login page
     register/     # Registration page
   components/
+    dashboard/
+      sidebar.tsx  # Client component with nav links & active state
+      topbar.tsx   # Server component showing user info
+      stats-card.tsx # Stats display card
     storefront/
       header.tsx  # Server component with nav & auth state
       footer.tsx  # 3-column footer
