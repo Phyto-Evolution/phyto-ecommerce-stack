@@ -1,3 +1,4 @@
+import "@/lib/events/handlers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";

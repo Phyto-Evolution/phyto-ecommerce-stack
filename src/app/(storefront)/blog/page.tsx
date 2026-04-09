@@ -4,6 +4,7 @@ import { getTenantId } from "@/lib/tenant";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Button } from "@/components/ui/button";
+import { SubscribeForm } from "@/components/storefront/subscribe-form";
 
 export default async function BlogPage() {
   const tenantId = getTenantId();
@@ -68,6 +69,9 @@ export default async function BlogPage() {
           ))}
         </div>
       )}
+      <div className="mt-12">
+        <SubscribeForm />
+      </div>
     </div>
   );
 }
