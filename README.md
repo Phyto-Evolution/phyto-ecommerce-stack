@@ -45,6 +45,8 @@ src/
           page.tsx        # Product list page
           new/page.tsx    # Create product page
           [id]/edit/page.tsx # Edit product page
+        blog/
+          page.tsx        # Blog management page
     api/auth/     # better-auth API route handler
     login/        # Login page
     register/     # Registration page
@@ -55,17 +57,21 @@ src/
       stats-card.tsx  # Stats display card
       product-form.tsx  # Product create/edit form
       product-table.tsx # Product list with actions
+      post-table.tsx    # Blog post list with approve/delete actions
     storefront/
       header.tsx  # Server component with nav & auth state
       footer.tsx  # 3-column footer
     ui/           # Shared UI primitives (Button, Card, Badge, etc.)
   actions/
     product-actions.ts # Server actions for product CRUD
+    blog-actions.ts    # Server actions for blog (create, approve, delete)
   lib/
     auth.ts       # better-auth server config
     auth-client.ts # better-auth client (React)
     db.ts         # Prisma client singleton
     tenant.ts     # Multi-tenant helper
+    events/
+      emitter.ts  # Typed event emitter for domain events
 prisma/
   schema.prisma   # Database schema (auth, catalog, blog, subscribers)
   migrations/     # Database migrations
