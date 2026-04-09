@@ -47,6 +47,8 @@ src/
           [id]/edit/page.tsx # Edit product page
         blog/
           page.tsx        # Blog management page
+        settings/
+          page.tsx        # Store settings page
     api/auth/     # better-auth API route handler
     login/        # Login page
     register/     # Registration page
@@ -63,8 +65,9 @@ src/
       footer.tsx  # 3-column footer
     ui/           # Shared UI primitives (Button, Card, Badge, etc.)
   actions/
-    product-actions.ts # Server actions for product CRUD
-    blog-actions.ts    # Server actions for blog (create, approve, delete)
+    product-actions.ts  # Server actions for product CRUD
+    blog-actions.ts     # Server actions for blog (create, approve, delete)
+    settings-actions.ts # Server actions for store settings (get/update)
   lib/
     auth.ts       # better-auth server config
     auth-client.ts # better-auth client (React)
@@ -74,6 +77,7 @@ src/
       emitter.ts  # Typed event emitter for domain events
 prisma/
   schema.prisma   # Database schema (auth, catalog, blog, subscribers)
+  seed.ts         # Seed script (settings, categories, sample products)
   migrations/     # Database migrations
 public/
   uploads/        # User-uploaded files (gitignored)
@@ -96,3 +100,11 @@ All tenant-scoped tables include a `tenantId` field for future multi-tenant supp
 ```bash
 npx prisma migrate dev
 ```
+
+### Seeding the Database
+
+```bash
+npx prisma db seed
+```
+
+Seeds store settings, 5 categories, and 3 sample products.
