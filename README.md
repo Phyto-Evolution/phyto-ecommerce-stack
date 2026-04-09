@@ -26,6 +26,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - **Framework:** Next.js 16 (App Router, TypeScript)
 - **Styling:** Tailwind CSS
 - **Database:** PostgreSQL 16 (via Docker)
+- **ORM:** Prisma 7 (PostgreSQL)
 - **Auth:** better-auth (planned)
 
 ## Project Structure
@@ -33,8 +34,30 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ```
 src/
   app/          # Next.js App Router pages & layouts
+  lib/
+    db.ts       # Prisma client singleton
+    tenant.ts   # Multi-tenant helper
+prisma/
+  schema.prisma # Database schema (auth, catalog, blog, subscribers)
+  migrations/   # Database migrations
 public/
   uploads/      # User-uploaded files (gitignored)
 docs/
   superpowers/  # Project plans & specs
+```
+
+## Database
+
+The Prisma schema includes models for:
+- **Auth:** User, Session, Account, Verification (better-auth compatible)
+- **Catalog:** Product, ProductVariant, ProductImage, Category, ProductCategory
+- **Blog:** Post, Comment
+- **Store:** StoreSetting, Subscriber
+
+All tenant-scoped tables include a `tenantId` field for future multi-tenant support.
+
+### Running Migrations
+
+```bash
+npx prisma migrate dev
 ```

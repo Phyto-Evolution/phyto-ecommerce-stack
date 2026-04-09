@@ -1,0 +1,223 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// AUTH (better-auth managed tables)
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          UserRole  @default(BUYER)
+  tenantId      String    @default("default")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  @@index([tenantId])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// STORE SETTINGS
+
+model StoreSetting {
+  id       String @id @default(cuid())
+  tenantId String @default("default")
+  key      String
+  value    Json
+  @@unique([tenantId, key])
+  @@index([tenantId])
+}
+
+// CATALOG
+
+model Category {
+  id          String            @id @default(cuid())
+  tenantId    String            @default("default")
+  name        String
+  slug        String
+  description String?
+  parentId    String?
+  parent      Category?         @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[]        @relation("CategoryTree")
+  products    ProductCategory[]
+  sortOrder   Int               @default(0)
+  createdAt   DateTime          @default(now())
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+}
+
+model Product {
+  id              String            @id @default(cuid())
+  tenantId        String            @default("default")
+  name            String
+  slug            String
+  description     String            @db.Text
+  sku             String?
+  price           Decimal           @db.Decimal(10, 2)
+  salePrice       Decimal?          @db.Decimal(10, 2)
+  costPrice       Decimal?          @db.Decimal(10, 2)
+  trackStock      Boolean           @default(true)
+  stockQty        Int               @default(0)
+  allowBackorders Boolean           @default(false)
+  status          ProductStatus     @default(DRAFT)
+  publishedAt     DateTime?
+  genus           String?
+  species         String?
+  cultivar        String?
+  growthStage     GrowthStage?
+  careInstructions Json?
+  categories      ProductCategory[]
+  images          ProductImage[]
+  variants        ProductVariant[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  @@unique([tenantId, slug])
+  @@unique([tenantId, sku])
+  @@index([tenantId])
+  @@index([tenantId, status])
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  sku       String?
+  price     Decimal @db.Decimal(10, 2)
+  stockQty  Int     @default(0)
+  sortOrder Int     @default(0)
+  @@unique([productId, sku])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  isCover   Boolean @default(false)
+  sortOrder Int     @default(0)
+}
+
+model ProductCategory {
+  productId  String
+  categoryId String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  @@id([productId, categoryId])
+}
+
+// BLOG
+
+model Post {
+  id          String     @id @default(cuid())
+  tenantId    String     @default("default")
+  authorId    String
+  title       String
+  slug        String
+  body        String     @db.Text
+  status      PostStatus @default(DRAFT)
+  tags        String[]
+  publishedAt DateTime?
+  comments    Comment[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([tenantId, status])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+  @@index([postId])
+}
+
+model Subscriber {
+  id           String   @id @default(cuid())
+  tenantId     String   @default("default")
+  email        String
+  confirmed    Boolean  @default(false)
+  subscribedAt DateTime @default(now())
+  @@unique([tenantId, email])
+  @@index([tenantId])
+}
+
+// ENUMS
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum GrowthStage {
+  SEEDLING
+  DEFLASKED
+  JUVENILE
+  SEMI_MATURE
+  MATURE
+  SPECIMEN
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  STAFF
+  BUYER
+  GUEST
+}
