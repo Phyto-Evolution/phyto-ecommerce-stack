@@ -7,6 +7,7 @@ const navItems = [
   { href: "/dashboard", label: "Overview", emoji: "\ud83d\udcca" },
   { href: "/dashboard/products", label: "Products", emoji: "\ud83c\udf3f" },
   { href: "/dashboard/blog", label: "Blog", emoji: "\ud83d\udcdd" },
+  { href: "/dashboard/blog/subscribers", label: "Subscribers", emoji: "\ud83d\udce7" },
   { href: "/dashboard/settings", label: "Settings", emoji: "\u2699\ufe0f" },
 ];
 
